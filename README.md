@@ -36,4 +36,18 @@ From within the root directory:
 npm install -g webpack
 npm install
 ```
+## CRUD
 
+API:
+
+Create: /api/reviews
+  >uses method insertReview and generates one review record using faker data
+
+Read: /api/reviews
+  >retrieves all reviews from reviews table
+
+Update: /api/reviews
+  >uses method updateReview to update the author via arguments at the given id
+
+Delete: /api/reviews
+  >uses method deleteReview to delete a review via arguments at the given id

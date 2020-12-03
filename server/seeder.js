@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: 'HackReactormysql12345',
   database: 'reviews'
 });
 
@@ -23,6 +23,38 @@ connection.connect((err) => {
       console.log('Connected to database');
   }
 });
+
+//create
+var insertReview = () => {
+  connection.query('insert into reviews set ?', createReview(), (err, results) => {
+    if (err) {
+      console.log('error with inserting 1 review')
+    } else {
+      console.log(results)
+    }
+  })
+}
+
+//update
+const updateReview = (author, id) => {
+  connection.query(`UPDATE reviews SET author = '${author}' WHERE id = '${id}'`, (err, results) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(results)
+    }
+  });
+}
+
+const deleteReview = (id) => {
+  connection.query(`DELETE FROM reviews WHERE id = ${id}`, (err, results) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(results);
+    }
+  })
+}
 
 function createReview() {
   const obj = {};
@@ -71,4 +103,7 @@ var seedReviews = () => {
   }
 };
 
-seedReviews();
+//seedReviews();
+module.exports.insertReview = insertReview;
+module.exports.updateReview = updateReview;
+module.exports.deleteReview = deleteReview;
