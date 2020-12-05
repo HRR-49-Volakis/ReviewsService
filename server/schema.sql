@@ -1,13 +1,9 @@
-DROP DATABASE IF EXISTS reviews;
-CREATE DATABASE reviews;
-
-USE reviews;
 
 CREATE TABLE reviews (
-id INT UNIQUE NOT NULL AUTO_INCREMENT,
+id SERIAL,
 product_id  VARCHAR(144),
 title VARCHAR(144),
-text TEXT ,
+text TEXT,
 date DATE,
 author	VARCHAR(144),
 overall_rating	INT,

@@ -8,6 +8,19 @@ const crud = require('./seeder.js')
 
 const faker = require('faker');
 
+const { Client } = require('pg');
+const connectionString = 'postgres://postgres:postgres@localhost:5432/reviews';
+const client = new Client({
+    connectionString: connectionString
+});
+client.connect((err) => {
+  if (err) {
+    console.log('not connected postgres')
+  } else {
+    console.log('connected to postgres')
+  }
+});
+
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'../client/dist')));
 
@@ -18,20 +31,20 @@ var connection = mysql.createConnection({
   database: 'reviews'
 });
 
-connection.connect((err) => {
-  if (err) {
-      console.log('Not connected to database');
-      throw err;
-  } else {
-      console.log('Connected to database');
-  }
-});
+// connection.connect((err) => {
+//   if (err) {
+//       console.log('Not connected to database');
+//       throw err;
+//   } else {
+//       console.log('Connected to database');
+//   }
+// });
 
 //read
 app.get('/api/reviews', (req, res) => {
   console.log('in GET')
   var queryString = 'SELECT * FROM reviews';
-  connection.query(queryString, (err,data) => {
+  client.query(queryString, (err,data) => {
     if(err){
       console.log("Couldn't Retrieve Reviews Data from DB!");
     } else {
@@ -45,7 +58,19 @@ app.get('/api/reviews', (req, res) => {
 
 //create
 app.post('/api/reviews', (req, res) => {
-  crud.insertReview((err, data) => {
+  var product_id = req.headers.product_id;
+  var title = req.headers.title;
+  var author = req.headers.author;
+  var overall_rating = req.headers.overall_rating;
+  var text = req.headers.text;
+  var date = req.headers.date;
+  var value_rating = req.headers.value_rating;
+  var quality_rating = req.headers.quality_rating;
+  var appearance_rating = req.headers.appearance_rating;
+  var ease_of_assembly_rating = req.headers.ease_of_assembly_rating;
+  var works_as_expected_rating = req.headers.works_as_expected_rating;
+  var recommended = req.headers.recommended;
+  crud.insertReview(product_id, title, text, date, author, overall_rating, value_rating, quality_rating, appearance_rating, ease_of_assembly_rating, works_as_expected_rating, recommended, (err, data) => {
     if (err) {
       console.log('error in post', err);
     } else {

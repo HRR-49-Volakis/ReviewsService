@@ -8,51 +8,52 @@ const faker = require('faker');
 
 app.use(bodyParser.json());
 
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'HackReactormysql12345',
-  database: 'reviews'
-});
+// var connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'HackReactormysql12345',
+//   database: 'reviews'
+// });
 
-connection.connect((err) => {
+const { Client } = require('pg');
+const connectionString = 'postgres://postgres:postgres@localhost:5432/reviews';
+const client = new Client({
+    connectionString: connectionString
+});
+client.connect((err) => {
   if (err) {
-      console.log('Not connected to database');
-      throw err;
+    console.log('not connected postgres')
   } else {
-      console.log('Connected to database');
+    console.log('connected to postgres')
   }
 });
 
+// connection.connect((err) => {
+//   if (err) {
+//       console.log('Not connected to database');
+//       throw err;
+//   } else {
+//       console.log('Connected to database');
+//   }
+// });
+
 //create
-var insertReview = () => {
-  connection.query('insert into reviews set ?', createReview(), (err, results) => {
-    if (err) {
-      console.log('error with inserting 1 review')
-    } else {
-      console.log(results)
-    }
+var insertReview = (product_id, title, text, date, author, overall_rating, value_rating, quality_rating, appearance_rating, ease_of_assembly_rating, works_as_expected_rating, recommended, callback) => {
+  client.query(`INSERT INTO reviews (product_id, title, text, date, author, overall_rating, value_rating, quality_rating, appearance_rating, ease_of_assembly_rating, works_as_expected_rating, recommended) VALUES ('${product_id}', '${title}', '${text}', '${date}', '${author}', ${overall_rating}, ${value_rating}, ${quality_rating}, ${appearance_rating}, ${ease_of_assembly_rating}, ${works_as_expected_rating}, ${recommended})`, (err, results) => {
+    callback(err, results);
   })
 }
 
 //update
-const updateReview = (author, id) => {
-  connection.query(`UPDATE reviews SET author = '${author}' WHERE id = '${id}'`, (err, results) => {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log(results)
-    }
+const updateReview = (author, id, callback) => {
+  client.query(`UPDATE reviews SET author = '${author}' WHERE id = '${id}'`, (err, results) => {
+    callback(err, results);
   });
 }
 
-const deleteReview = (id) => {
-  connection.query(`DELETE FROM reviews WHERE id = ${id}`, (err, results) => {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log(results);
-    }
+const deleteReview = (id, callback) => {
+  client.query(`DELETE FROM reviews WHERE id = ${id}`, (err, results) => {
+   callback(err, results)
   })
 }
 
@@ -88,7 +89,7 @@ function createReview() {
     'max': 5
   });
   obj.recommended = faker.random.boolean()
-  return obj;
+  return [obj];
 };
 
 var seedReviews = () => {
@@ -104,6 +105,7 @@ var seedReviews = () => {
 };
 
 //seedReviews();
+
 module.exports.insertReview = insertReview;
 module.exports.updateReview = updateReview;
 module.exports.deleteReview = deleteReview;
