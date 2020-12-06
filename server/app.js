@@ -43,7 +43,7 @@ var connection = mysql.createConnection({
 //read
 app.get('/api/reviews', (req, res) => {
   console.log('in GET')
-  var queryString = 'SELECT * FROM reviews';
+  var queryString = 'select * from reviews order by id asc;';
   client.query(queryString, (err,data) => {
     if(err){
       console.log("Couldn't Retrieve Reviews Data from DB!");
@@ -53,6 +53,7 @@ app.get('/api/reviews', (req, res) => {
       console.log("got reviews");
 
     }
+
   })
 });
 

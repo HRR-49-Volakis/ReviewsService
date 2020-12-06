@@ -1,6 +1,6 @@
 
 CREATE TABLE reviews (
-id SERIAL,
+id int UNIQUE NOT NULL GENERATED ALWAYS AS IDENTITY,
 product_id  VARCHAR(144),
 title VARCHAR(144),
 text TEXT,

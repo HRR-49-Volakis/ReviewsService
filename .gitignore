@@ -1,5 +1,6 @@
 ##KeyFiles
 *.pem
+*.csv
 /node_modules/
 .DS_Store
 client/dist/bundle.js
