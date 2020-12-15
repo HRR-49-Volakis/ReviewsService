@@ -1,0 +1,26 @@
+#Configuration file:
+
+config:
+  target: "http://localhost:3004"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+scenarios:
+    - flow:
+      - get:
+          url: '/api/reviews'
+      - post:
+          url: '/api/reviews'
+          json:
+            product_id: 500
+            title: "TestingArtillery"
+            author: "ArtilleryAuthor"
+            overall_rating: 3
+            text: "ArtilleryTEXT"
+            date: "Dec 12 2020"
+            value_rating: 5
+            quality_rating: 3
+            appearance_rating: 2
+            ease_of_assembly_rating: 1
+            works_as_expected_rating: 5
+            recommended: true

@@ -1,7 +1,7 @@
 
 CREATE TABLE reviews (
 id int UNIQUE NOT NULL GENERATED ALWAYS AS IDENTITY,
-product_id  VARCHAR(144),
+product_id  INT,
 title VARCHAR(144),
 text TEXT,
 date DATE,

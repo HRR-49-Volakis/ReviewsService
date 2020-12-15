@@ -25,16 +25,30 @@ class App extends React.Component {
     })
   }
 
+  getProductIdFromPath() {
+    var url = window.location.pathname;
+    var result = url.split('/');
+    var id = result[3];
+    if (id === undefined) {
+      id = 1;
+    }
+    console.log('the id is: ', id);
+    return id;
+  }
+
   BackSliderClick() {
     this.setState({
       slideOpen: false
     })
   }
   getReviews(){
-    axios.get('/api/reviews')
+    console.log(this.getProductIdFromPath());
+    axios.get('/api/products/' + this.getProductIdFromPath() + '/reviews/allReviews')
     .then(res => {
+      console.log('in getReviews function')
+      console.log('this is res:', res)
       this.setState({
-        reviewsArray: res.data
+        reviewsArray: res.data.rows
       });
     })
     .catch(err => console.log('Couldn\'t GET reviews', err))
@@ -54,7 +68,7 @@ class App extends React.Component {
       <div>
         <Slider reviews={this.state.reviewsArray} show={this.state.slideOpen}/>
         { backdrop }
-        <SliderButton toggle={this.SliderClick}/>
+        <SliderButton reviews={this.state.reviewsArray} toggle={this.SliderClick}/>
       </div>
     )
   }

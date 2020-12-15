@@ -9,11 +9,14 @@ class ReviewAverage extends React.Component {
   }
 
   getOverall(reviews) {
+    var length = reviews.length;
+    console.log('this is reviews prop', reviews)
+    console.log('reviews length: ', length)
     var sum = 0;
     for (var i = 0; i < reviews.length; i++) {
       sum += reviews[i].overall_rating;
     }
-    var result = Math.round(10*(sum / 100))/10;
+    var result = sum / 5;
     return result;
   }
 
@@ -22,7 +25,7 @@ class ReviewAverage extends React.Component {
     for (var i = 0; i < reviews.length; i++) {
       sum += reviews[i].value_rating;
     }
-    var result = Math.round(10*(sum / 100))/10;
+    var result = sum / 5;
     return result;
   }
 
@@ -31,7 +34,7 @@ class ReviewAverage extends React.Component {
     for (var i = 0; i < reviews.length; i++) {
       sum += reviews[i].quality_rating;
     }
-    var result = Math.round(10*(sum / 100))/10;
+    var result = sum / 5;
     return result;
   }
 
@@ -40,7 +43,7 @@ class ReviewAverage extends React.Component {
     for (var i = 0; i < reviews.length; i++) {
       sum += reviews[i].appearance_rating;
     }
-    var result = Math.round(10*(sum / 100))/10;
+    var result = sum / 5;
     return result;
   }
 
@@ -49,7 +52,7 @@ class ReviewAverage extends React.Component {
     for (var i = 0; i < reviews.length; i++) {
       sum += reviews[i].ease_of_assembly_rating;
     }
-    var result = Math.round(10*(sum / 100))/10;
+    var result = sum / 5;
     return result;
   }
 
@@ -58,7 +61,7 @@ class ReviewAverage extends React.Component {
     for (var i = 0; i < reviews.length; i++) {
       sum += reviews[i].works_as_expected_rating;
     }
-    var result = Math.round(10*(sum / 100))/10;
+    var result = sum / 5;
     return result;
   }
 

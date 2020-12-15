@@ -15,7 +15,7 @@ const client = new Client({
 });
 client.connect((err) => {
   if (err) {
-    console.log('not connected postgres')
+    console.log('not connected postgres', err)
   } else {
     console.log('connected to postgres')
   }
@@ -43,7 +43,10 @@ const deleteReview = (id, callback) => {
 
 function createReview() {
   const obj = {};
-  obj.product_id = faker.random.uuid();
+  obj.product_id = faker.random.number({
+    'min': 1,
+    'max': 1000000
+  });
   obj.title = faker.lorem.words();
   obj.text = faker.lorem.sentence();
   obj.date = 'Dec 4 2020'
@@ -87,18 +90,13 @@ var seedReviews = () => {
   return reviewsArray;
 };
 
-var reviewsArr = seedReviews();
-
-//console.log(reviewsArr.length)
-
-
 const createReviewsHeader = () => {
   const reviewStream = fs.createWriteStream(`${__dirname}/data/reviewData.csv`);
   reviewStream.write('product_id, title, text, date, author, overall_rating, value_rating, quality_rating, appearance_rating, ease_of_assembly_rating, works_as_expected_rating, recommended\n');
 };
 
 const writeReviews = () => {
-  //var i = 1;
+  var reviewsArr = seedReviews();
   const reviewStream = fs.createWriteStream(`${__dirname}/data/reviewData.csv`, {flags: 'a'});
   for (let review of reviewsArr) {
     reviewStream.write(`${review.product_id},${review.title},${review.text},${review.date},${review.author},${review.overall_rating},${review.value_rating},${review.quality_rating},${review.appearance_rating},${review.ease_of_assembly_rating},${review.works_as_expected_rating},${review.recommended}\n`);
@@ -133,6 +131,11 @@ const makeReviewsCSV = () => {
 const copyIntoPostgres = () => {
   seed10MReviews();
 }
+
+//createReviewsHeader();
+//writeReviewsBatches();
+//makeReviewsCSV();
+//copyIntoPostgres();
 
 module.exports.insertReview = insertReview;
 module.exports.updateReview = updateReview;

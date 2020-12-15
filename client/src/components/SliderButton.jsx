@@ -8,7 +8,7 @@ const SliderButton = (props) => (
       <button className="btn" onClick={props.toggle}>
         <div className ='ReviewTextDiv'>
           <div className='ReviewText'>Reviews</div>
-          <ReviewStars value={2.9}/>(100)
+          <ReviewStars value={3.6}/>({props.reviews.length})
         </div>
       </button>
    </div>
